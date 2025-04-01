@@ -2433,6 +2433,82 @@ raxml-ng --evaluate --msa archaea_0.8_raxml-check.raxml.reduced.phy --tree archa
 raxml-ng --evaluate --msa bacteria_0.8_raxml-check.raxml.reduced.phy --tree bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre --prefix bacteria_0.8_raxml --model GTR+G —threads 24
 ```
 
+Reformat raxml files for sepp:
+```{bash, eval=FALSE}
+cp archaea_0.8_raxml.raxml.log archaea_0.8_raxml.raxml_info.log
+python sepp_reformat-info.py archaea_0.8_raxml.raxml_info.log
+```
+Using this script: https://github.com/smirarab/sepp/blob/master/sepp-package/buildref/reformat-info.py saved as: sepp_reformat-info.py
+
+Didn't work, so going to work through it: Note that the values here seem to change slightly with every run. 
+Some notes on making this manually:
+Base frequencies - these are already in the order required (ACGT)
+Overall time for tree evaluation can be replaced with Elapsed time
+Substitution rates - these are also already in the order required
+GAMMA likelihood is probably LogLikelihood?
+
+```{python}
+
+
+This is RAxML version 7.7.2 released by Alexandros Stamatakis on July 31 2013.
+
+This is a RAxML_info file from an --evaluate run, manually reformatted
+
+Partition: 0
+Alignment Patterns: 1340
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+RAxML-NG was called at 04-Dec-2024 09:15:27 as follows:
+
+raxml-ng --evaluate --msa archaea_0.8_raxml-check.raxml.reduced.phy --tree archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre --p
+refix archaea_0.8_raxml --model GTR+G <E2><80><94>threads 24
+
+Base frequencies: 0.224411 0.252166 0.284495 0.238928
+
+Inference[0]: Time 69.721592 CAT-based likelihood -0000, best rearrangement setting 5
+alpha[0]: 1.000000 rates[0] ac ag at cg ct gt: 1.166108 4.368360 1.832145 1.019301 5.962743 1.000000
+
+
+NOT conducting any final model optimizations on all 1 trees under CAT-based
+model ....
+
+Final GAMMA  likelihood: -216263.676941
+```
+Saved as arc_ref.raxml_info
+
+```{python}
+
+
+This is RAxML version 7.7.2 released by Alexandros Stamatakis on July 31 2013.
+
+This is a RAxML_info file from an --evaluate run, manually reformatted
+
+Partition: 0
+Alignment Patterns: 1577
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+RAxML-NG was called at 04-Dec-2024 09:16:05 as follows:
+
+raxml-ng --evaluate --msa bacteria_0.8_raxml-check.raxml.reduced.phy --tree bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre -
+-prefix bacteria_0.8_raxml --model GTR+G --threads 24
+
+Base frequencies: 0.209289 0.232667 0.311531 0.246513 
+
+Inference[0]: Time 896.452 CAT-based likelihood -0000, best rearrangement setting 5
+alpha[0]: 1.000000 rates[0] ac ag at cg ct gt: 1.048719 2.928148 1.638867 0.831209 3.689522 1.000000 
+
+
+NOT conducting any final model optimizations on all 1 trees under CAT-based
+model ....
+
+Final GAMMA  likelihood: -4679887.038556
+```
+Saved as bac_ref.raxml_info
+
 ### Resave the phylip files and reformat for the hmm files
 
 ```{python, eval=FALSE}
@@ -2538,9 +2614,11 @@ raxmlHPC-SSE3 -g archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre -s a
 #and this worked!!!
 
 raxmlHPC-PTHREADS-SSE3 -g bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre -s bacteria_0.8_raxml-check.raxml.reduced_dna.fna -m GTRGAMMA -n bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed_SSE3 -p 13 -T 24
+
+### Did I even use the right versions of the files?!?! I don't think so!!! But maybe not necessary??
+
+raxmlHPC-PTHREADS-SSE3 -g archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre -s archaea_0.8_raxml-check.raxml.reduced.phy -m GTRGAMMA -n archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed_SSE3_PTHREADS -p 13
 ```
-
-
 
 ### Copy and rename the resulting files
 
@@ -2559,6 +2637,7 @@ mkdir gtdb_picrust_ref/bac_ref
 cp gtdb_picrust_files/bacteria_0.8_raxml-check.raxml.reduced_dna.fna gtdb_picrust_ref/bac_ref/bac_ref.fna
 cp gtdb_picrust_files/bacteria_0.8_raxml-check.raxml.reduced_dna.hmm gtdb_picrust_ref/bac_ref/bac_ref.hmm
 cp gtdb_picrust_files/bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre gtdb_picrust_ref/bac_ref/bac_ref.tre
+cp gtdb_picrust_files/bacteria_0.8_raxml.raxml.bestModel gtdb_picrust_ref/bac_ref/bac_ref.model
 #cp gtdb_picrust_files/bacteria_0.8_raxml.raxml.log gtdb_picrust_ref/bac_ref/bac_ref.raxml_info
 
 mkdir gtdb_picrust_ref/arc_ref
@@ -2566,7 +2645,8 @@ cp gtdb_picrust_files/archaea_0.8_raxml-check.raxml.reduced_dna.fna gtdb_picrust
 cp gtdb_picrust_files/archaea_0.8_raxml-check.raxml.reduced_dna.hmm gtdb_picrust_ref/arc_ref/arc_ref.hmm
 cp gtdb_picrust_files/archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre gtdb_picrust_ref/arc_ref/arc_ref.tre
 cp gtdb_picrust_files/archaea_0.8_raxml.raxml.bestModel gtdb_picrust_ref/arc_ref/arc_ref.model
-cp gtdb_picrust_files/RAxML_info.archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed_SSE3 gtdb_picrust_ref/arc_ref/arc_ref.raxml_info
+#cp gtdb_picrust_files/RAxML_info.archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed_SSE3 gtdb_picrust_ref/arc_ref/arc_ref.raxml_info
+cp gtdb_picrust_files/arc_ref.raxml_info gtdb_picrust_ref/arc_ref
 ```
 
 ## Using 0.5 sequences
@@ -5536,741 +5616,259 @@ cp -r picrust_test_v2.6.0/chemerin_16S/ test_sepp/
 cd test_sepp
 
 place_seqs.py -s chemerin_16S/seqs_arc.fna -o arc_placed_seqs.tre -p 24 -r arc \
-                    --intermediate placement_working_sepp_arc -t sepp
+                    --intermediate placement_working_sepp_arc -t sepp --verbose
                     
-place_seqs.py -s chemerin_16S/seqs_arc.fna -o bac_placed_seqs.tre -p 8 \
-                    --intermediate placement_working_sepp_bac -t sepp
+place_seqs.py -s chemerin_16S/seqs_arc.fna -o arc_placed_seqs_epa.tre -p 24 -r arc \
+                    --intermediate placement_working_sepp_arc --verbose
                     
+#the new file kind of works... had to run export LC_ALL=C
+#vi /bigpool/robyn/picrust2_database/picrust2-v2.6.0/picrust2/default_files/archaea/arc_ref/arc_ref.raxml_info
 
+hsp.py -i 16S -r archaea -t arc_placed_seqs.tre -o arc_marker_nsti_predicted.tsv.gz -p 1 -n
+hsp.py -i 16S -r archaea -t arc_placed_seqs_raxml_info_separate_run.tre -o arc_raxml_info_separate_run_marker_nsti_predicted.tsv.gz -p 1 -n
+hsp.py -i 16S -r archaea -t arc_placed_seqs_epa.tre -o arc_epa_marker_nsti_predicted.tsv.gz -p 1 -n
+
+vi /bigpool/robyn/picrust2_database/picrust2-v2.6.0/picrust2/default_files/bacteria/bac_ref/bac_ref.raxml_info
+
+place_seqs.py -s chemerin_16S/seqs_arc.fna -o bac_placed_seqs.tre -p 24 \
+                    --intermediate placement_working_sepp_bac -t sepp --verbose
+                    
+place_seqs.py -s chemerin_16S/seqs_arc.fna -o bac_placed_seqs_epa.tre -p 24 \
+                    --intermediate placement_working_sepp_bac --verbose
+                    
+hsp.py -i 16S -r bacteria -t bac_placed_seqs.tre -o bac_marker_nsti_predicted.tsv.gz -p 1 -n
+hsp.py -i 16S -r bacteria -t bac_placed_seqs_epa.tre -o bac_epa_marker_nsti_predicted.tsv.gz -p 1 -n
 ```
 
-# Repeat make database
+## Make testing files
 
-## Get the genomes
-
-These were downloaded from [The GTDB website](https://data.gtdb.ecogenomic.org/releases/release214/214.1/genomic_files_reps/). You should check for an updated version of GTDB before downloading them. 
-
-Download all files:
+Place seqs:
 ```{bash, eval=FALSE}
-mkdir picrust2_database
-cd picrust2_database/
-mkdir GTDB_r220
-mkdir GTDB_r220/database_files
-cd GTDB_r220/database_files
-wget https://data.gtdb.ecogenomic.org/releases/release220/220.0/genomic_files_reps/gtdb_genomes_reps_r220.tar.gz https://data.gtdb.ecogenomic.org/releases/release220/220.0/ar53_r220.tree https://data.gtdb.ecogenomic.org/releases/release220/220.0/ar53_metadata_r220.tsv.gz https://data.gtdb.ecogenomic.org/releases/release220/220.0/ar53_taxonomy_r220.tsv.gz https://data.gtdb.ecogenomic.org/releases/release220/220.0/bac120_metadata_r220.tsv.gz https://data.gtdb.ecogenomic.org/releases/release220/220.0/bac120_r220.tree https://data.gtdb.ecogenomic.org/releases/release220/220.0/bac120_taxonomy_r220.tsv.gz 
+place_seqs.py -s test_data/place_seqs/study_seqs_test.fasta -r bac -o test_data/place_seqs/place_seqs_output_MPGA/bac_placed_seqs.tre --intermediate test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_bac
 
-tar -xvf gtdb_genomes_reps_r220.tar.gz
-mkdir gtdb_genomes
-find gtdb_genomes_reps_r220/ -type f -print0 | xargs -0 mv -t gtdb_genomes/
-mkdir genomes_to_search_barrnap
-mkdir genomes_to_search_barrnap/bacteria
-mkdir genomes_to_search_barrnap/archaea
+place_seqs.py -s test_data/place_seqs/study_seqs_test.fasta -r arc -o test_data/place_seqs/place_seqs_output_MPGA/arc_placed_seqs.tre --intermediate test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_arc
+
+gzip test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_bac/*.fasta 
+gzip test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_arc/*.fasta 
+#gunzip test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_bac/*.fasta.gz
+#gunzip test_data/place_seqs/place_seqs_output_MPGA/place_seqs_working_arc/*.fasta.gz
+
+place_seqs.py -s test_data/place_seqs/seqs_to_align.fasta -r bac -o test_data/place_seqs/place_seqs_output_seqs_to_align/bac_placed_seqs.tre --intermediate test_data/place_seqs/place_seqs_output_seqs_to_align/place_seqs_working_bac
+
+place_seqs.py -s test_data/place_seqs/seqs_to_align.fasta -r arc -o test_data/place_seqs/place_seqs_output_seqs_to_align/arc_placed_seqs.tre --intermediate test_data/place_seqs/place_seqs_output_seqs_to_align/place_seqs_working_arc
+
+cp test_data/place_seqs/place_seqs_output_seqs_to_align/place_seqs_working_bac/study_seqs_hmmalign.fasta test_data/place_seqs/hmmalign_out_bac.fasta
+cp test_data/place_seqs/place_seqs_output_seqs_to_align/place_seqs_working_arc/study_seqs_hmmalign.fasta test_data/place_seqs/hmmalign_out_arc.fasta
+
+rm -r test_data/place_seqs/place_seqs_output_seqs_to_align
 ```
 
-### First get bacterial and archaeal genomes separately using tree files
-
-```{python}
-from ete3 import Tree
-import os
-
-tree_name_bac = 'bac120_r220.tree'
-tree_name_arc = 'ar53_r220.tree'
-  
-tree_bac = Tree(tree_name_bac, format=1, quoted_node_names=True)
-bac_genomes_in_tree = []
-for node in tree_bac.traverse("postorder"):
-  if 'GB_' in node.name or 'GCA_' in node.name or 'GCF_' in node.name:
-    bac_genomes_in_tree.append(node.name)
-  
-tree_arc = Tree(tree_name_arc, format=1, quoted_node_names=True)
-arc_genomes_in_tree = []
-for node in tree_arc.traverse("postorder"):
-  if 'GB_' in node.name or 'GCA_' in node.name or 'GCF_' in node.name:
-    arc_genomes_in_tree.append(node.name)
-
-genomes = os.listdir('gtdb_genomes/')
-genomes = [g for g in genomes if '.decomp' not in g]
-bac_genomes_in_tree = [g.split('_', 1)[1] for g in bac_genomes_in_tree]
-arc_genomes_in_tree = [g.split('_', 1)[1] for g in arc_genomes_in_tree]
-bac_genomes_in_tree = set(bac_genomes_in_tree)
-arc_genomes_in_tree = set(arc_genomes_in_tree)
-bac_genomes = []
-arc_genomes = []
-
-bac_count = 0
-arc_count = 0
-for genome in genomes:
-  if genome.replace('_genomic.fna.gz', '') in bac_genomes_in_tree:
-    m = os.system('mv gtdb_genomes/'+genome+' genomes_to_search_barrnap/bacteria')
-    bac_count += 1
-  elif genome.replace('_genomic.fna.gz', '') in arc_genomes_in_tree:
-    m = os.system('mv gtdb_genomes/'+genome+' genomes_to_search_barrnap/archaea')
-    arc_count += 1
-  if bac_count % 1000 == 0:
-    print('Bacterial genomes moved: '+str(bac_count))
-  if arc_count % 1000 == 0:
-    print('Archaeal genomes moved: '+str(arc_count))
-    
-print(bac_count, arc_count)
-#107235 5869
-```
-
-Filter to only >90% completion and <10% redundancy:
-```{python, eval=FALSE}
-import pandas as pd
-import os
-
-barrnap_bacteria = os.listdir('genomes_to_search_barrnap/bacteria')
-barrnap_archaea = os.listdir('genomes_to_search_barrnap/archaea')
-
-bac_md = pd.read_csv('bac120_metadata_r220.tsv', index_col=0, header=0, sep='\t')
-arc_md = pd.read_csv('ar53_metadata_r220.tsv', index_col=0, header=0, sep='\t')
-md = pd.concat([bac_md, arc_md]) #596859 genomes
-md = md[md['checkm_completeness'] >= 90]
-md = md[md['checkm_contamination'] <= 10] #474470 genomes
-genomes = [g.replace('RS_', '').replace('GB_', '') for g in md.index.values]
-barrnap_bacteria = [g.replace('_genomic.fna.gz', '') for g in barrnap_bacteria]
-barrnap_archaea = [g.replace('_genomic.fna.gz', '') for g in barrnap_archaea]
-genomes = set(genomes)
-barrnap_bacteria = set(barrnap_bacteria)
-barrnap_archaea = set(barrnap_archaea)
-bac_count = 0
-for genome in barrnap_bacteria:
-  if genome not in genomes:
-    m = os.system('mv genomes_to_search_barrnap/bacteria/'+genome+'_genomic.fna.gz gtdb_genomes/')
-  else:
-    bac_count += 1
-#67813
-    
-arc_count = 0
-for genome in barrnap_archaea:
-  if genome not in genomes:
-    m = os.system('mv genomes_to_search_barrnap/archaea/'+genome+'_genomic.fna.gz gtdb_genomes/')
-  else:
-    arc_count += 1
-#2473
-```
-
-List of bacteria:
-```{python, eval=FALSE}
-#cd genomes_to_search_barrnap/
-import os
-
-genomes = os.listdir('bacteria')
-with open('bacteria.txt', 'w') as f:
-  for genome in genomes:
-    f.write(genome.replace('.gz', '')+'\n')
-```
-
-### Run barrnap
-
-```{bash, eval=FALSE}
-#cd genomes_to_search_barrnap
-mkdir barrnap_bacteria
-mkdir barrnap_archaea
-
-parallel -j 24 --progress --eta 'gunzip {}' ::: archaea/*.gz
-parallel -j 24 --progress --eta -a bacteria.txt 'gunzip bacteria/{}.gz'
-
-parallel -j 8 --progress --eta 'barrnap -q -k arc {} --outseq barrnap_archaea/{/} --reject 0.8 --threads 6' ::: archaea/*.fna
-parallel -j 8  --progress --eta -a bacteria.txt 'barrnap -q -k bac bacteria/{} --outseq barrnap_bacteria/{} --reject 0.8 --threads 6'
-
-mkdir barrnap_bacteria_16S_single
-mkdir barrnap_archaea_16S_single
-mkdir barrnap_bacteria_16S_multiple
-mkdir barrnap_archaea_16S_multiple
-```
-
-### Count copies per genome and get files with multiple 16S copies only
-
-```{python, eval=FALSE}
-from Bio import SeqIO
-import os
-import pandas as pd
-import numpy as np
-
-kingdom = 'archaea'
-genomes = os.listdir('barrnap_'+kingdom)
-
-copies = []
-for genome in genomes:
-  count = 0
-  sequences = []
-  for record in SeqIO.parse('barrnap_'+kingdom+'/'+genome, "fasta"):
-    if '16S' in record.id:
-      sequences.append(record)
-      count += 1
-  copies.append([genome, count])
-  if sequences != []:
-    if len(sequences) == 1:
-      w = SeqIO.write(sequences, 'barrnap_'+kingdom+'_16S_single/'+genome, "fasta")
-    else:
-      w = SeqIO.write(sequences, 'barrnap_'+kingdom+'_16S_multiple/'+genome, "fasta")
-
-with open(kingdom+'_16S_copies.txt', 'w') as f:
-  for copy in copies:
-    w = f.write(copy[0].replace('_genomic.fna', '')+'\t'+str(copy[1])+'\n')
-    
-k08 = pd.read_csv(kingdom+'_16S_copies.txt', sep='\t', header=None, index_col=0)
-k08 = k08[k08.max(axis=1) > 0]
-print(kingdom)
-print('80%: ', k08.shape[0], np.mean(k08.iloc[:, 0].values), np.median(k08.iloc[:, 0].values), np.max(k08.iloc[:, 0].values))
-# archaea
-# 80% r214:  1553 1.2137797810688988 1.0
-# 80% r220:  1320 1.2833333333333334 1.0 6
-# bacteria
-# 80% r214:  32595 1.8404663291915937 1.0 37
-# 80% r220:  33229 1.962773480995516 1.0 37
-```
-
-### Now cluster the ones with multiple 16S copies
-
-```{bash, eval=FALSE}
-mkdir barrnap_bacteria_16S_clustered
-parallel -j 8 --eta --progress 'vsearch --cluster_fast {} --id 0.9 --centroids barrnap_bacteria_16S_clustered/{/} --threads 6' ::: barrnap_bacteria_16S_multiple/*
-
-mkdir barrnap_archaea_16S_clustered
-parallel -j 8 --progress --eta 'vsearch --cluster_fast {} --id 0.9 --centroids barrnap_archaea_16S_clustered/{/} --threads 6' ::: barrnap_archaea_16S_multiple/*
-```
-
-### Make files with single 16S for each genome
-
-```{python, eval=FALSE}
-import os
-from Bio import SeqIO
-import random
-from Bio.SeqRecord import SeqRecord
-
-kingdoms = ['archaea', 'bacteria']
-for kingdom in kingdoms:
-  clusters = os.listdir('barrnap_'+kingdom+'_16S_clustered')
-  singles = []
-  ids = []
-  for genome in clusters:
-    records = []
-    for record in SeqIO.parse('barrnap_'+kingdom+'_16S_clustered/'+genome, "fasta"):
-      this_record = SeqRecord(record.seq, id=genome.replace('_genomic.fna', ''), description='')
-      records.append(this_record)
-    if len(records) > 1: 
-      num = int(random.choice(range(len(records))))
-      singles.append(records[num])
-      ids.append(records[num].id)
-    else:
-      singles.append(records[0])
-      ids.append(records[0].id)
-  single_copies = os.listdir('barrnap_'+kingdom+'_16S_single/')
-  for genome in single_copies:
-    for record in SeqIO.parse('barrnap_'+kingdom+'_16S_single/'+genome, "fasta"):
-      this_record = SeqRecord(record.seq, id=genome.replace('_genomic.fna', ''), description='')
-      singles.append(this_record)
-      ids.append(this_record.id)
-  SeqIO.write(singles, kingdom+"_16S_genes.fasta", "fasta")
-
-#1320
-#33229
-```
-
-Look at these sequence lengths:
-```{python, eval=FALSE}
-from Bio import SeqIO
-import numpy as np
-
-kingdom = 'bacteria'
-lengths = []
-for record in SeqIO.parse(kingdom+"_16S_genes.fasta", "fasta"):
-  lengths.append(len(str(record.seq)))
-
-print(min(lengths), max(lengths), np.mean(lengths), np.median(lengths))
-#bacteria
-#1268 1808 1510.6717626169911 1521.0
-#archaea
-#1270 2410 1476.7363636363636 1472.0
-```
-
-### Cluster these single 16S genes for all genomes
-
-```{bash, eval=FALSE}
-vsearch --cluster_fast archaea_16S_genes.fasta --id 1 --centroids archaea_16S_centroids.fasta --uc archaea_16S_clusters.uc --threads 24
-# Reading file archaea_16S_genes.fasta 100%  
-# 1949292 nt in 1320 seqs, min 1270, max 2410, avg 1477
-# Masking 100%  
-# Sorting by length 100%
-# Counting unique k-mers 100%
-# Clustering 100%  
-# Sorting clusters 100%
-# Writing clusters 100%  
-# Clusters: 1309 Size min 1, max 3, avg 1.0
-# Singletons: 1299, 98.4% of seqs, 99.2% of clusters
-
-vsearch --cluster_fast bacteria_16S_genes.fasta --id 1 --centroids bacteria_16S_centroids.fasta --uc bacteria_16S_clusters.uc --threads 24
-# 50198112 nt in 33229 seqs, min 1268, max 1808, avg 1511
-# Masking 100%  
-# Sorting by length 100%
-# Counting unique k-mers 100%  
-# Clustering 100%  
-# Sorting clusters 100%
-# Writing clusters 100%  
-# Clusters: 31938 Size min 1, max 26, avg 1.0
-# Singletons: 31119, 93.7% of seqs, 97.4% of clusters
-```
-
-### Align sequences
-
-ssu-align:
-```{bash, eval=FALSE}
-conda activate clustalo
-export SSUALIGNDIR="/usr/local/share/ssu-align-0.1.1"
-ssu-align --rfonly archaea_16S_centroids.fasta archaea_16S_centroids_ssu_align
-
-ssu-align --rfonly bacteria_16S_centroids.fasta bacteria_16S_centroids_ssu_align
-
-########################
-
-esl-reformat -o archaea_16S_centroids_ssu_align.fna afa archaea_16S_centroids_ssu_align/archaea_16S_centroids_ssu_align.archaea.stk
-
-esl-reformat -o bacteria_16S_centroids_ssu_align.fna afa bacteria_16S_centroids_ssu_align/bacteria_16S_centroids_ssu_align.bacteria.stk
-
-# cd ..
-```
-
-Look at these sequence lengths (unaligned):
-```{python, eval=FALSE}
-from Bio import SeqIO
-import numpy as np
-
-kingdom = 'bacteria'
-lengths = []
-for record in SeqIO.parse(kingdom+'_16S_centroids_ssu_align_0.8.fna', "fasta"):
-  lengths.append(len(str(record.seq)))
-
-print(min(lengths), max(lengths), np.mean(lengths), np.median(lengths))
-#bacteria
-#1508 1508 1508.0 1508.0
-#archaea
-#1582 1582 1582.0 1582.0
-```
-
-### Now look at choosing best genome for each cluster
-
-Archaea:
-```{python, eval=FALSE}
-import os
-import pandas as pd
-from Bio import SeqIO
-import numpy as np
-import random
-
-clusters = 'genomes_to_search_barrnap/archaea_16S_clusters_0.8.uc'
-aligned_fasta = 'genomes_to_search_barrnap/archaea_16S_centroids_ssu_align_0.8.fna'
-md = pd.read_csv('GTDB_r214/ar53_metadata_r214.tsv', index_col=0, header=0, sep='\t')
-md = md[md['gtdb_representative'] == 't']
-
-genes_16S = []
-for record in SeqIO.parse(aligned_fasta, "fasta"):
-  genes_16S.append(record.id)
-  
-rename_md = {}
-for row in md.index.values:
-  rename_md[row] = row.split('_', 1)[1]
-
-md = md.rename(index=rename_md)
-
-clusters_all_genomes, clusters_centroid = {}, []
-for row in open(clusters, 'r'):
-  row = row.replace('\n', '').split('\t')
-  if row[-1] != '*':
-    genomes = row[-2:]
-    if genomes[0] in genes_16S:
-      #print('First one', genomes)
-      clusters_centroid.append(genomes[0])
-      if genomes[0] in clusters_all_genomes:
-        clusters_all_genomes[genomes[0]].append(genomes[1])
-      else:
-        clusters_all_genomes[genomes[0]] = [genomes[1]]
-    elif genomes[1] in genes_16S:
-      clusters_centroid.append(genomes[1])
-      if genomes[1] in clusters_all_genomes:
-        clusters_all_genomes[genomes[1]].append(genomes[0])
-      else:
-        clusters_all_genomes[genomes[1]] = [genomes[0]]
-    else:
-      print('Neither', genomes)
-
-#now choose best genome from all clusters
-cluster_bests = {}
-for cluster in clusters_all_genomes:
-  md_cluster = md.loc[[cluster]+clusters_all_genomes[cluster], :]
-  completeness = md_cluster['checkm_completeness'].values
-  contamination = md_cluster['checkm_contamination'].values
-  best = ''
-  if len(set(completeness)) == 1:
-    if len(set(contamination)) == 1:
-      num = int(random.choice(range(md_cluster.shape[0])))
-      best = md_cluster.index.values[num]
-    else:
-      lowest, best = 100, ''
-      for row in md_cluster.index.values:
-        if md_cluster.loc[row, 'checkm_contamination'] < lowest:
-          lowest, best = md_cluster.loc[row, 'checkm_contamination'], row
-  else:
-    highest, best = 0, ''
-    for row in md_cluster.index.values:
-      if md_cluster.loc[row, 'checkm_completeness'] > highest:
-        highest, best = md_cluster.loc[row, 'checkm_completeness'], row
-  cluster_bests[cluster] = best
-
-#rename fasta file with the best of the cluster
-new_records = []
-all_ids = []
-for record in SeqIO.parse(aligned_fasta, "fasta"):
-  if record.id in cluster_bests:
-    print('Changing', record.id, 'to', cluster_bests[record.id])
-    record.id = cluster_bests[record.id]
-  all_ids.append(record.id)
-  new_records.append(record)
-
-SeqIO.write(new_records, aligned_fasta.replace('.fna', '_best.fna'), "fasta")
-
-#make file with name of best genome in cluster and other genomes within the cluster
-with open('genomes_to_search_barrnap/archaea_16S_clusters_processed_0.8.txt', 'w') as f:
-  w = f.write('Centroid\tBest\tAll genomes\n')
-  for cluster in clusters_all_genomes:
-    w = f.write(cluster+'\t'+cluster_bests[cluster]+'\t'+cluster+','+','.join(clusters_all_genomes[cluster])+'\n')
-  
-#get reduced metadata file including only those genomes that are the best
-md = md.loc[all_ids, :]
-md.to_csv('archaea_metadata_clusters_ssu_align_centroids_0.8.csv')
-```
-
-Bacteria:
-```{python, eval=FALSE}
-import os
-import pandas as pd
-from Bio import SeqIO
-import numpy as np
-import random
-
-clusters = 'genomes_to_search_barrnap/bacteria_16S_clusters_0.8.uc'
-aligned_fasta = 'genomes_to_search_barrnap/bacteria_16S_centroids_ssu_align_0.8.fna'
-md = pd.read_csv('GTDB_r214/bac120_metadata_r214.tsv', index_col=0, header=0, sep='\t')
-md = md[md['gtdb_representative'] == 't']
-
-genes_16S = []
-for record in SeqIO.parse(aligned_fasta, "fasta"):
-  genes_16S.append(record.id)
-  
-rename_md = {}
-for row in md.index.values:
-  rename_md[row] = row.split('_', 1)[1]
-
-md = md.rename(index=rename_md)
-
-clusters_all_genomes, clusters_centroid = {}, []
-for row in open(clusters, 'r'):
-  row = row.replace('\n', '').split('\t')
-  if row[-1] != '*':
-    #print(row)
-    genomes = row[-2:]
-    if genomes[0] in genes_16S:
-      #print('First one', genomes)
-      clusters_centroid.append(genomes[0])
-      if genomes[0] in clusters_all_genomes:
-        clusters_all_genomes[genomes[0]].append(genomes[1])
-      else:
-        clusters_all_genomes[genomes[0]] = [genomes[1]]
-    elif genomes[1] in genes_16S:
-      clusters_centroid.append(genomes[1])
-      if genomes[1] in clusters_all_genomes:
-        clusters_all_genomes[genomes[1]].append(genomes[0])
-      else:
-        clusters_all_genomes[genomes[1]] = [genomes[0]]
-    else:
-      neither = True #note that this means that the sequences were removed from this step because they fitted the model of a different domain the best
-
-#now choose best genome from all clusters
-cluster_bests = {}
-for cluster in clusters_all_genomes:
-  md_cluster = md.loc[[cluster]+clusters_all_genomes[cluster], :]
-  completeness = md_cluster['checkm_completeness'].values
-  contamination = md_cluster['checkm_contamination'].values
-  best = ''
-  if len(set(completeness)) == 1:
-    if len(set(contamination)) == 1:
-      num = int(random.choice(range(md_cluster.shape[0])))
-      best = md_cluster.index.values[num]
-    else:
-      lowest, best = 100, ''
-      for row in md_cluster.index.values:
-        if md_cluster.loc[row, 'checkm_contamination'] < lowest:
-          lowest, best = md_cluster.loc[row, 'checkm_contamination'], row
-  else:
-    highest, best = 0, ''
-    for row in md_cluster.index.values:
-      if md_cluster.loc[row, 'checkm_completeness'] > highest:
-        highest, best = md_cluster.loc[row, 'checkm_completeness'], row
-  cluster_bests[cluster] = best
-
-#rename fasta file with the best of the cluster
-new_records = []
-all_ids = []
-for record in SeqIO.parse(aligned_fasta, "fasta"):
-  if record.id in cluster_bests:
-    print('Changing', record.id, 'to', cluster_bests[record.id])
-    record.id = cluster_bests[record.id]
-  all_ids.append(record.id)
-  new_records.append(record)
-
-SeqIO.write(new_records, aligned_fasta.replace('.fna', '_best.fna'), "fasta")
-
-#make file with name of best genome in cluster and other genomes within the cluster
-with open('genomes_to_search_barrnap/bacteria_16S_clusters_processed_0.8.txt', 'w') as f:
-  w = f.write('Centroid\tBest\tAll genomes\n')
-  for cluster in clusters_all_genomes:
-    w = f.write(cluster+'\t'+cluster_bests[cluster]+'\t'+cluster+','+','.join(clusters_all_genomes[cluster])+'\n')
-  
-#get reduced metadata file including only those genomes that are the best
-md = md.loc[all_ids, :]
-md.to_csv('bacteria_metadata_clusters_ssu_align_centroids_0.8.csv')
-```
-
-```{bash, eval=FALSE}
-mv gtdb_picrust_files gtdb_picrust_files_first_try
-mkdir gtdb_picrust_files
-```
-
-### And filter the files to only include genomes <= 10% contamination and >= 90% completion
-
-```{python}
-import pandas as pd
-from Bio import SeqIO
-from ete3 import Tree
-
-domains = ['bacteria', 'archaea']
-trees = ['GTDB_r214/bac120_r214.tree', 'GTDB_r214/ar53_r214.tree']
-
-for d in range(len(domains)):
-  domain = domains[d]
-  tree = Tree(trees[d], format=1, quoted_node_names=True)
-  aligned_fasta = 'genomes_to_search_barrnap/'+domain+'_16S_centroids_ssu_align_0.8_best.fna'
-  md = pd.read_csv(domain+'_metadata_clusters_ssu_align_centroids_0.8.csv', index_col=0, header=0)
-  md = md[md['checkm_contamination'] <= 10]
-  md = md[md['checkm_completeness'] >= 90]
-  new_records = []
-  for record in SeqIO.parse(aligned_fasta, "fasta"):
-    if record.id in md.index.values:
-      new_records.append(record)
-  SeqIO.write(new_records, 'gtdb_picrust_files/'+domain+'_16S_centroids_ssu_align_best_reduced_0.8.fna', "fasta")
-  pruning = []
-  names = []
-  for node in tree.traverse("postorder"):
-    if 'GB_' in node.name or 'GCA_' in node.name or 'GCF_' in node.name:
-      new_name = str(node.name).split('_', 1)[1]
-      node.name = new_name
-      names.append(new_name)
-      if new_name in md.index.values:
-        pruning.append(new_name)
-  tree.prune(pruning)
-  tree.write(outfile='gtdb_picrust_files/'+domain+'_16S_centroids_ssu_align_best_reduced_0.8.tre')
-  
-```
-
-### Run the raxml check
-
-```{bash, eval=FALSE}
-cd gtdb_picrust_files
-raxml-ng --check --msa archaea_16S_centroids_ssu_align_best_reduced_0.8.fna --model GTR+G --prefix archaea_0.8_raxml-check
-#this didn't need fixing!
-#esl-reformat -o archaea_raxml-check.raxml.reduced.phy phylip archaea_16S_centroids_ssu_align_best_reduced.fna
-#but for some reason, the place_seqs step didn't work when I'd used this so I've just made the steps the same for both of them
-
-raxml-ng --check --msa bacteria_16S_centroids_ssu_align_best_reduced_0.8.fna --model GTR+G --prefix bacteria_0.8_raxml-check
-#this had some duplicates removed still apparently (copied this from previously, but outcome is the same!!)
-```
-
-Convert archaea alignment to phylip so we have the same for both:
-```{python, eval=FALSE}
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
-from Bio import AlignIO
-from Bio.Align import MultipleSeqAlignment
-
-seq_records = []
-seqs, lengths = 0, []
-for record in SeqIO.parse('archaea_16S_centroids_ssu_align_best_reduced_0.8.fna', 'fasta'):
-  seq_records.append(record)
-  seqs += 1
-  lengths.append(len(str(record.seq)))
-  
-# count = 0
-# for row in open('bacteria_0.8_raxml-check.raxml.reduced.phy', 'r'):
-#   if count < 2: print([row])
-#   count += 1
-  
-with open('archaea_0.8_raxml-check.raxml.reduced.phy', 'w') as f:
-  f.write(str(seqs)+' '+str(int(lengths[0]))+'\n')
-  for record in seq_records:
-    f.write(record.id+' '+str(record.seq)+'\n')
-  
-```
-
-### Filter the tree files to include only these
-
-```{python, eval=FALSE}
-from ete3 import Tree
-import os
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-from Bio.Seq import Seq
-#from Bio.Alphabet import IUPAC
-
-fixed_alignments = ['bacteria_0.8_raxml-check.raxml.reduced.phy', 'archaea_0.8_raxml-check.raxml.reduced.phy']
-tree_files = ['bacteria_16S_centroids_ssu_align_best_reduced_0.8.tre', 'archaea_16S_centroids_ssu_align_best_reduced_0.8.tre']
-
-for f in range(len(fixed_alignments)):
-  fixed_alignment = fixed_alignments[f]
-  tree_file = tree_files[f]
-  genomes = []
-  for row in open(fixed_alignment, 'r'):
-    if 'GB_' in row or 'GCA_' in row or 'GCF_' in row:
-      genomes.append(row.split(' ')[0].replace('>', '').replace('\n', ''))
-  
-  genomes = set(genomes)
-  print(len(genomes))
-  #29311, 
-  tree = Tree(tree_file, format=1, quoted_node_names=True)
-  genome_nodes = []
-  for node in tree.traverse("postorder"):
-    if node.name in genomes:
-      genome_nodes.append(node.name)
-  
-  tree.prune(genome_nodes)
-  tree.write(outfile=tree_file.replace('.tre', '_fixed.tre'), format=1)
-```
-
-### Run raxml
-
-```{bash, eval=FALSE}
-mkdir archaea_first_raxml
-mv archaea_raxml.raxml* archaea_first_raxml/
-
-raxml-ng --evaluate --msa archaea_0.8_raxml-check.raxml.reduced.phy --tree archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre --prefix archaea_0.8_raxml --model GTR+G —threads 24
-
-raxml-ng --evaluate --msa bacteria_0.8_raxml-check.raxml.reduced.phy --tree bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre --prefix bacteria_0.8_raxml --model GTR+G —threads 24
-```
-
-### Resave the phylip files and reformat for the hmm files
-
-```{python, eval=FALSE}
-from Bio import SeqIO
-from Bio.SeqRecord import SeqRecord
-from Bio.Seq import Seq
-from Bio.Alphabet import IUPAC
-from Bio import AlignIO
-from Bio.Align import MultipleSeqAlignment
-
-files = ['bacteria_0.8_raxml-check.raxml.reduced.phy', 'archaea_0.8_raxml-check.raxml.reduced.phy']
-new_names = ['bacteria_0.8_raxml-check.raxml.reduced.fna', 'archaea_0.8_raxml-check.raxml.reduced.fna']
-
-for f in range(len(files)):
-  sequences = {}
-  seq_records = []
-  count = 0
-  for row in open(files[f], 'r'):
-    #if count > 10: break
-    if '_' in row:
-      name, seq = row.replace('\n', '').split(' ')
-      sequences[name] = seq
-      seq_records.append(SeqRecord(Seq(seq),id=name, description=''))
-    count += 1
-  msa = MultipleSeqAlignment(seq_records)
-  AlignIO.write(msa, new_names[f], "fasta")
-```
-
-Convert the fasta file to DNA and reformat to stockholm:
-```{bash, eval=FALSE}
-esl-reformat -d -o bacteria_0.8_raxml-check.raxml.reduced_dna.fna afa bacteria_0.8_raxml-check.raxml.reduced.fna
-
-esl-reformat -o bacteria_0.8_raxml-check.raxml.reduced_dna.sto stockholm bacteria_0.8_raxml-check.raxml.reduced_dna.fna
-
-esl-reformat -d -o archaea_0.8_raxml-check.raxml.reduced_dna.fna afa archaea_0.8_raxml-check.raxml.reduced.fna
-
-esl-reformat -o archaea_0.8_raxml-check.raxml.reduced_dna.sto stockholm archaea_0.8_raxml-check.raxml.reduced_dna.fna
-```
-
-### Resave the archaea file and reformat for the hmm files
-
-```{python}
-# from Bio import SeqIO
-# from Bio.SeqRecord import SeqRecord
-# from Bio.Seq import Seq
-# from Bio.Alphabet import IUPAC
-# from Bio import AlignIO
-# from Bio.Align import MultipleSeqAlignment
-# 
-# files = ['bacteria_raxml-check.raxml.reduced.phy']
-# new_names = ['bacteria_raxml-check.raxml.reduced.fna']
-# 
-# for f in range(len(files)):
-#   sequences = {}
-#   seq_records = []
-#   count = 0
-#   for row in open(files[f], 'r'):
-#     #if count > 10: break
-#     if '_' in row:
-#       name, seq = row.replace('\n', '').split(' ')
-#       sequences[name] = seq
-#       seq_records.append(SeqRecord(Seq(seq),id=name, description=''))
-#     count += 1
-#   msa = MultipleSeqAlignment(seq_records)
-#   AlignIO.write(msa, new_names[f], "fasta")
-```
-
-### Reformat for the hmm files
-
-```{bash, eval=FALSE}
-#esl-reformat -d -o archaea_16S_centroids_ssu_align_best_reduced_dna.fna afa archaea_16S_centroids_ssu_align_best_reduced.fna
-
-#esl-reformat -o archaea_16S_centroids_ssu_align_best_reduced_dna.sto stockholm archaea_16S_centroids_ssu_align_best_reduced_dna.fna
-```
-
-
-### Run the HMMs
-
-```{bash, eval=FALSE}
-#hmmbuild --cpu 24 archaea_16S_centroids_ssu_align_best_reduced_dna.hmm archaea_16S_centroids_ssu_align_best_reduced_dna.sto
-
-#esl-reformat -o archaea_16S_centroids_ssu_align_best_reduced_dna_reformat.fna fasta archaea_16S_centroids_ssu_align_best_reduced_dna.sto
-
-hmmbuild --cpu 24 bacteria_0.8_raxml-check.raxml.reduced_dna.hmm bacteria_0.8_raxml-check.raxml.reduced_dna.sto
-hmmbuild --cpu 24 archaea_0.8_raxml-check.raxml.reduced_dna.hmm archaea_0.8_raxml-check.raxml.reduced_dna.sto
-```
-
-### Copy and rename the resulting files
-
+Make md5sum default files:
 ```{bash, eval=FALSE}
 cd ..
-mv gtdb_picrust_ref/ gtdb_0.5_picrust_ref
-mkdir gtdb_picrust_ref
-#mkdir gtdb_picrust_ref/arc_ref
-mkdir gtdb_picrust_ref/bac_ref
-#cp gtdb_picrust_files/archaea_16S_centroids_ssu_align_best_reduced_dna_reformat.fna gtdb_picrust_ref/arc_ref/arc_ref.fna
-#cp gtdb_picrust_files/archaea_16S_centroids_ssu_align_best_reduced_dna.hmm gtdb_picrust_ref/arc_ref/arc_ref.hmm
-#cp gtdb_picrust_files/archaea_16S_centroids_ssu_align_best_reduced.tre gtdb_picrust_ref/arc_ref/arc_ref.tre
-#cp gtdb_picrust_files/archaea_raxml.raxml.bestModel gtdb_picrust_ref/arc_ref/arc_ref.model
-#mv gtdb_picrust_ref/arc_ref gtdb_picrust_ref/arc_ref_initial
+cd picrust2/default_files/bacteria 
+md5 bac_ref/bac_ref.fna 
+MD5 (bac_ref/bac_ref.fna) = 0903e782b6248d0528f6339cbe139477
+md5 bac_ref/bac_ref.tre
+MD5 (bac_ref/bac_ref.tre) = bb5ebff1d6c3631b3c5c231111c4c927
+md5 bac_ref/bac_ref.hmm
+MD5 (bac_ref/bac_ref.hmm) = 4d733eafcdfb82015025c1307729be4b
+md5 bac_ref/bac_ref.model
+MD5 (bac_ref/bac_ref.model) = a526202df3b072403da6e22efed3ea5a
 
-cp gtdb_picrust_files/bacteria_0.8_raxml-check.raxml.reduced_dna.fna gtdb_picrust_ref/bac_ref/bac_ref.fna
-cp gtdb_picrust_files/bacteria_0.8_raxml-check.raxml.reduced_dna.hmm gtdb_picrust_ref/bac_ref/bac_ref.hmm
-cp gtdb_picrust_files/bacteria_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre gtdb_picrust_ref/bac_ref/bac_ref.tre
-cp gtdb_picrust_files/bacteria_0.8_raxml.raxml.bestModel gtdb_picrust_ref/bac_ref/bac_ref.model
-cp gtdb_picrust_files/bacteria_0.8_raxml.raxml.log gtdb_picrust_ref/bac_ref/bac_ref.raxml_info
+cd ..
+cd archaea
+md5 arc_ref/arc_ref.fna
+MD5 (arc_ref/arc_ref.fna) = de8a9fd11a2753c068842a5ae576e981
+md5 arc_ref/arc_ref.tre
+MD5 (arc_ref/arc_ref.tre) = 6081bbebf1e87fca1226c781ba3f07ac
+md5 arc_ref/arc_ref.hmm
+MD5 (arc_ref/arc_ref.hmm) = 0d0174451eb8a12df1b972ea7c88d670
+md5 arc_ref/arc_ref.model
+MD5 (arc_ref/arc_ref.model) = 3483e5d72ca2cd5bc9a74657beff780c
+```
 
-mkdir gtdb_picrust_ref/arc_ref
-cp gtdb_picrust_files/archaea_0.8_raxml-check.raxml.reduced_dna.fna gtdb_picrust_ref/arc_ref/arc_ref.fna
-cp gtdb_picrust_files/archaea_0.8_raxml-check.raxml.reduced_dna.hmm gtdb_picrust_ref/arc_ref/arc_ref.hmm
-cp gtdb_picrust_files/archaea_16S_centroids_ssu_align_best_reduced_0.8_fixed.tre gtdb_picrust_ref/arc_ref/arc_ref.tre
-cp gtdb_picrust_files/archaea_0.8_raxml.raxml.bestModel gtdb_picrust_ref/arc_ref/arc_ref.model
-cp gtdb_picrust_files/archaea_0.8_raxml.raxml.log gtdb_picrust_ref/arc_ref/arc_ref.raxml_info
+Aborted this because they were annoying and mainly running only to make sure the basic functions themselves are working, not to check the database as such. Many are using subsampled files anyway, so the basic working is the same. 
+
+Final install test vulcan:
+```{bash, eval=FALSE}
+#conda remove -n picrust2-v2.6.0-finaltest --all
+#rm -r picrust2-v2.6.0
+
+cd tools
+git clone --single-branch -b PICRUSt2-v2.6.0 https://github.com/picrust/picrust2
+mv picrust2 picrust2-v2.6.0
+cd picrust2-v2.6.0
+conda env create -n picrust2-v2.6.0-finaltest -f picrust2-env.yaml
+conda activate picrust2-v2.6.0-finaltest
+pip install --editable .
+
+cd ..
+mkdir picrust2_testing
+cp -r /bigpool/robyn/picrust2_database/test_sepp/chemerin_16S/ picrust2_testing/
+cd picrust2_testing
+mkdir test_output
+
+THREADS=64
+    
+/usr/bin/time -v \
+    picrust2_pipeline.py -s chemerin_16S/seqs_arc.fna \
+                         -i chemerin_16S/table.biom \
+                         -o test_output/v2.6.0_out_epang \
+                         -p $THREADS \
+                         --stratified \
+                         --per_sequence_contrib \
+                         -t epa-ng \
+    2> test_output/v2.6.0_out_epang.log
+    
+/usr/bin/time -v \
+    picrust2_pipeline.py -s chemerin_16S/seqs_arc.fna \
+                         -i chemerin_16S/table.biom \
+                         -o test_output/v2.6.0_out_sepp \
+                         -p $THREADS \
+                         --stratified \
+                         --per_sequence_contrib \
+                         -t sepp \
+    2> test_output/v2.6.0_out_sepp.log
+    
+place_seqs.py -s chemerin_16S/seqs_arc.fna --ref_dir bac -o bac_placed_seqs.tre -p 1 --intermediate bac_placement_working -t sepp
+place_seqs.py -s chemerin_16S/seqs_arc.fna --ref_dir arc -o arc_placed_seqs.tre -p 1 --intermediate arc_placement_working -t sepp
+```
+
+Final install test local:
+```{bash, eval=FALSE}
+cd testing_installs
+wget https://github.com/picrust/picrust2/archive/v2.6.0.tar.gz
+tar xvzf  v2.6.0.tar.gz
+cd picrust2-2.6.0/
+
+#conda remove -n picrust2-2.6.0-github --all
+conda env create -n picrust2-2.6.0-github -f picrust2-env.yaml --platform osx-64 
+
+#remove sepp, r-castor, hmmer, epa-ng, dendropy lines
+
+conda activate picrust2-2.6.0-github
+pip install --editable .
+pytest
+```
+
+
+```{bash, eval=FALSE}
+conda env create -n qiime2-amplicon-2024.10 --file https://data.qiime2.org/distro/amplicon/qiime2-amplicon-2024.10-py310-linux-conda.yml
+conda activate qiime2-amplicon-2024.10
+cd tools/picrust2-v2.6.0
+conda env update --name qiime2-amplicon-2024.10 --file picrust2-env.yaml
+```
+
+## Testing changing the dependencies
+
+```{bash, eval=FALSE}
+conda install mamba
+mamba update conda
+mamba update mamba
+
+cd testing_installs/picrust2-2.6.0
+#made some changes to the dependencies
+#Notes: 
+
+conda env create -f picrust2-env.yaml -n picrust2_dev --platform osx-64
+conda activate picrust2_dev
+pip install --use-pep517 --config-settings editable_mode=compat -e .
+pytest
+#all ran OK! Added some versions back in from the conda list
+#now try again
+conda env create -f picrust2-env.yaml -n picrust2_dev_2 --platform osx-64
+conda activate picrust2_dev_2
+pip install --use-pep517 --config-settings editable_mode=compat -e .
+pytest
+#passed!
+```
+
+Try again with bioconda environment: 
+Following instructions here: https://github.com/bioconda/bioconda-common
+```{bash, eval=FALSE}
+wget https://raw.githubusercontent.com/bioconda/bioconda-common/master/{common,install-and-set-up-conda,configure-conda}.sh
+sudo bash install-and-set-up-conda.sh
+conda activate /opt/mambaforge/envs/bioconda
+conda clean --all
+bash configure-conda.sh
+```
+
+## Test how long to run
+
+Simulate samples from the total list of sequences in our samples that have 10, 100, 1000, 10000 sequences and 10, 100, 1000, 10000 samples. Run this with old and new databases and get time and memory use.
+Run all with 12 threads, but try one of them with only 1 thread. 
+
+Just try running with /usr/bin/time:
+```{bash, eval=FALSE}
+(/usr/bin/time -v picrust2_pipeline.py -s chemerin_16S/seqs.fna -i chemerin_16S/table.biom -o picrust2_out_pipeline_time_test -p 1) 2> test_time.txt
+```
+
+Make new folder:
+```{bash, eval=FALSE}
+mkdir simulated_samples
+```
+
+Make samples:
+```{python, eval=FALSE}
+from Bio import SeqIO
+import pandas as pd
+import random
+
+all_seqs = {}
+count = 0
+for fa in ['blueberry_16S_rep_seqs.fasta', 'cameroon_16S_rep_seqs.fasta', 'hmp_16S_rep_seqs.fasta', 'indian_16S_rep_seqs.fasta', 'mammal_16S_rep_seqs.fasta', 'ocean_16S_rep_seqs.fasta', 'primate_16S_rep_seqs.fasta']:
+  for record in SeqIO.parse('picrust_datasets_test/data/'+fa, 'fasta'):
+    all_seqs[count] = record
+    count += 1
+
+num_seqs = [10, 100, 1000, 10000]
+max_abun = [10000, 1000, 10, 10]
+num_samples = [10, 100, 1000]
+
+for n in range(len(num_seqs)):
+  ns = num_seqs[n]
+  #if ns > 10: continue
+  list_nums = [b for b in all_seqs]
+  random_seqs = random.sample(list_nums, ns)
+  these_seqs = []
+  first_row = ['#OTU_ID']
+  for rs in random_seqs:
+    these_seqs.append(all_seqs[rs])
+    first_row.append(all_seqs[rs].id)
+  SeqIO.write(these_seqs, 'simulated_samples/'+str(ns)+'_sequences.fasta', "fasta")
+  for num_sam in num_samples:
+    print(ns, num_sam)
+    #if num_sam > 10: continue
+    this_dataset = []
+    for a in range(num_sam):
+      this_sample = ['Sample_'+str(a+1)]
+      for s in range(len(these_seqs)):
+        this_sample.append(random.randrange(1, max_abun[n]))
+      this_dataset.append(this_sample)
+    this_dataset = pd.DataFrame(this_dataset, columns=first_row).set_index('#OTU_ID')
+    this_dataset = this_dataset.transpose()
+    this_dataset.to_csv('simulated_samples/'+str(ns)+'_sequences_'+str(num_sam)+'_samples.tsv', sep='\t')
+        
+  
+```
+
+Run with /usr/bin/time:
+```{bash, eval=FALSE}
+cd simulated_samples
+parallel -j 2 --progress '(/usr/bin/time -v picrust2_pipeline_oldIMG.py -s {1}_sequences.fasta -i {1}_sequences_{2}_samples.tsv -o picrust2_out_pipeline_{1}_sequences_{2}_samples_oldIMG -p 12) 2> {1}_sequences_{2}_samples.txt' ::: 10 100 1000 10000 ::: 10 100 1000
+
+parallel -j 2 --progress '(/usr/bin/time -v picrust2_pipeline_oldIMG.py -s {1}_sequences.fasta -i {1}_sequences_{2}_samples.tsv -o picrust2_out_pipeline_{1}_sequences_{2}_samples_oldIMG_1thread -p 1) 2> {1}_sequences_{2}_samples_time_oldIMG_1thread.txt' ::: 10 ::: 10 100 1000
+
+parallel -j 2 --progress '(/usr/bin/time -v picrust2_pipeline.py -s {1}_sequences.fasta -i {1}_sequences_{2}_samples.tsv -o picrust2_out_pipeline_{1}_sequences_{2}_samples_SC -p 12) 2> {1}_sequences_{2}_samples_time_SC.txt' ::: 10 100 1000 10000 ::: 10 100 1000
+
+parallel -j 2 --progress '(/usr/bin/time -v picrust2_pipeline.py -s {1}_sequences.fasta -i {1}_sequences_{2}_samples.tsv -o picrust2_out_pipeline_{1}_sequences_{2}_samples_SC_1thread -p 1) 2> {1}_sequences_{2}_samples_time_SC_1thread.txt' ::: 10 ::: 10 100 1000
+```
+
+Added option for custom traits. Test this:
+```{bash, eval=FALSE}
+less /home/robyn/anaconda3/envs/picrust2-v2.6.0/bin/picrust2_pipeline.py
+--custom_trait_tables_ref1
+
+picrust2_pipeline.py -s chemerin_16S/seqs.fna -i chemerin_16S/table.biom -o picrust2_out_pipeline_custom_traits -p 12 --custom_trait_tables_ref1 ../add_custom_trait/bacteria_alkB.txt --custom_trait_tables_ref2 ../add_custom_trait/archaea_alkB.txt --no_pathways
 ```

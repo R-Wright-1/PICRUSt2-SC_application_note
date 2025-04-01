@@ -22,7 +22,8 @@ import matplotlib as mpl
 import matplotlib.colors as colors
 
 colours = ['#AF6182', '#F7D171', '#546D84', '#C57F3B', '#898B76']
-overall_folder = '/Users/robynwright/Dropbox/Papers_writing/PICRUSt2_database_application_note/compile_output/'
+folder = '/Users/robynwright/Dropbox/Papers_writing/Revision_PICRUSt2_database_application_note/'
+overall_folder = '/Users/robynwright/Dropbox/Papers_writing/Revision_PICRUSt2_database_application_note/compile_output/'
 datasets = ['blueberry', 'cameroon', 'hmp', 'indian', 'mammal', 'ocean', 'primate']
 dataset_names = ['Blueberry', 'Cameroon', 'HMP', 'Indian', 'Mammal', 'Ocean', 'Primate']
 ```
@@ -152,12 +153,12 @@ plt.title('Archaea', fontweight='bold')
 #plt.ylim([-20, 1300])
 plt.semilogy()
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/number_of_taxa.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/number_of_taxa.png', dpi=600, bbox_inches='tight')
 
 ```
 
 ```{python}
-data = pd.read_csv('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2_database_application_note/Number_of_genomes_old_and_new.csv', index_col=0, header=0)
+data = pd.read_csv(folder+'Number_of_genomes_old_and_new.csv', index_col=0, header=0)
 
 plt.figure(figsize=(10,4))
 ax1, ax2 = plt.subplot(121), plt.subplot(122)
@@ -212,7 +213,7 @@ ti = plt.title('Archaea', fontweight='bold')
 xl = plt.xlim([-15, 1150])
 # 
 plt.subplots_adjust(wspace=0.1)
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2_database_application_note/figures/number_of_taxa_horizontal.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/number_of_taxa_horizontal.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Comparison of NSTI
@@ -294,7 +295,7 @@ cols = [colours[2], colours[3], colours[4]]
 handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=cols[s], markersize=12) for s in range(len(databases))]
 lg = plt.legend(handles=handles, loc='upper left')
   
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/nsti_bacteria_and_archaea.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/nsti_bacteria_and_archaea.png', dpi=600, bbox_inches='tight')
 ```
 
 Best of bacteria and archaea for new:
@@ -346,7 +347,7 @@ handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfac
 lg = plt.legend(handles=handles, loc='upper left')
   
 #plt.show()
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/nsti_best.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/nsti_best.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Correlation between old and new
@@ -393,7 +394,7 @@ for trait in ['EC', 'KO', 'path']:
   xt = plt.xticks([d for d in range(len(datasets))], datasets)
   yl = plt.ylabel('Spearman correlation coefficient')
   ti = plt.title(trait.replace('path', 'Pathways').replace('KO', 'KEGG orthologs').replace('EC', 'EC numbers'), fontweight='bold')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_'+trait+'.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/correlation_'+trait+'.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -451,7 +452,7 @@ for trait in ['EC', 'KO', 'path']:
   if trait != 'EC': yt = axes[trait].set_yticklabels([])
   print('\n\n')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_all.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/correlation_all.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -520,7 +521,7 @@ for trait in ['EC', 'KO', 'path']:
   databases = ['Default PICRUSt2', 'Updated PICRUSt2']
   handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
   legend = ax.legend(handles=handles, loc='lower right')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_'+trait+'_mgs.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/correlation_'+trait+'_mgs.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -593,7 +594,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('A', loc='left', fontweight='bold'), ax2.set_title('B', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_combined_mgs.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/correlation_combined_mgs.png', dpi=600, bbox_inches='tight')
 ```
 
 
@@ -645,7 +646,7 @@ for trait in ['EC', 'KO', 'path']:
   xt = plt.xticks([d for d in range(len(datasets))], datasets)
   yl = plt.ylabel('Bray-Curtis distance')
   ti = plt.title(trait.replace('path', 'Pathways').replace('KO', 'KEGG orthologs').replace('EC', 'EC numbers'), fontweight='bold')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_'+trait+'.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/distance_braycurtis_'+trait+'.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -705,7 +706,7 @@ for trait in ['EC', 'KO', 'path']:
   if trait != 'EC': yt = axes[trait].set_yticklabels([])
   print('\n\n')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_all.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/distance_braycurtis_all.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -784,7 +785,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('C', loc='left', fontweight='bold'), ax2.set_title('D', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_combined_mgs.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/distance_braycurtis_combined_mgs.png', dpi=600, bbox_inches='tight')
         
 
 ```
@@ -859,7 +860,7 @@ for trait in ['EC', 'KO', 'path']:
   databases = ['Default PICRUSt2', 'Updated PICRUSt2']
   handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
   legend = ax.legend(handles=handles, loc='lower right')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_'+trait+'_mgs.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/distance_braycurtis_'+trait+'_mgs.png', dpi=600, bbox_inches='tight')
 
 ```
 
@@ -922,7 +923,7 @@ combined_df.transpose().plot(kind='bar', stacked=True, figsize=(8,5), width=0.9,
 plt.legend(loc='upper left', bbox_to_anchor=(1.01, 1.02))
 yl = plt.ylabel('Relative abundance (%)')
 yl = plt.ylim([0, 100])
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/relative_abundance_class.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/relative_abundance_class.png', dpi=600, bbox_inches='tight')
 #plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/relative_abundance_genus.png', dpi=600, bbox_inches='tight')
 #plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/relative_abundance_family.png', dpi=600, bbox_inches='tight')
 ```
@@ -989,7 +990,7 @@ for trait in ['EC', 'KO']:
   databases = ['Default PICRUSt2', 'Updated PICRUSt2']
   handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
   legend = ax.legend(handles=handles, loc='lower right')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_'+trait+'_mock.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/distance_braycurtis_'+trait+'_mock.png', dpi=600, bbox_inches='tight')
 ```
 
 Combined figure:
@@ -1060,7 +1061,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('C', loc='left', fontweight='bold'), ax2.set_title('D', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_combined_mock.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/distance_braycurtis_combined_mock.png', dpi=600, bbox_inches='tight')
 ```
 
 #### V4-V5
@@ -1132,7 +1133,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('C', loc='left', fontweight='bold'), ax2.set_title('D', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/distance_braycurtis_combined_mock_trimmed.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/distance_braycurtis_combined_mock_trimmed.png', dpi=600, bbox_inches='tight')
 ```
 
 ### Correlations
@@ -1197,7 +1198,7 @@ for trait in ['EC', 'KO']:
   databases = ['Default PICRUSt2', 'Updated PICRUSt2']
   handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
   legend = ax.legend(handles=handles, loc='lower right')
-  plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_'+trait+'_mock.png', dpi=600, bbox_inches='tight')
+  plt.savefig(folder+'figures/correlation_'+trait+'_mock.png', dpi=600, bbox_inches='tight')
 ```
 
 Combined figure:
@@ -1268,7 +1269,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('A', loc='left', fontweight='bold'), ax2.set_title('B', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_combined_mock.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/correlation_combined_mock.png', dpi=600, bbox_inches='tight')
 ```
 
 Combined figure:
@@ -1339,7 +1340,7 @@ for trait in ['EC', 'KO']:
 
 ti = ax1.set_title('A', loc='left', fontweight='bold'), ax2.set_title('B', loc='left', fontweight='bold')
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/correlation_combined_mock_trimmed.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/correlation_combined_mock_trimmed.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Overall figure
@@ -1371,7 +1372,7 @@ for a in range(len(axes)):
   ti = axes[a].set_title(titles[a], fontweight='bold', fontsize=14)
 
 #plot number of taxa
-data = pd.read_csv('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/Number_of_genomes_old_and_new.csv', index_col=0, header=0)
+data = pd.read_csv(folder+'Number_of_genomes_old_and_new.csv', index_col=0, header=0)
 data = data.loc[:, ['Phylum', 'Family', 'Genus', 'Genomes']]
 
 levels = data.columns
@@ -1456,7 +1457,7 @@ databases = ['Default PICRUSt2', 'Updated PICRUSt2']
 handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
 legend = ax5_num_genes.legend(handles=handles, loc='upper left', bbox_to_anchor=(-0.2,-0.4))
 
-plt.savefig('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2 database application note/figures/Overall_plot.png', dpi=600, bbox_inches='tight')
+plt.savefig(folder+'figures/Overall_plot.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Copy all output to put together
@@ -1588,6 +1589,16 @@ for ds in datasets:
   updated = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_updated_nsti.tsv', index_col=0, header=0, sep='\t')['metadata_NSTI'].values
   sc = ax1.scatter(np.random.normal(x[0], scale=0.1, size=len(default)), default, color=colours[0], alpha=0.3, s=5)
   sc = ax1.scatter(np.random.normal(x[1], scale=0.1, size=len(updated)), updated, color=colours[1], alpha=0.3, s=5)
+  mo = max([max(default), max(updated)])
+  if mo > 2: mo = 2
+  t, p = ttest_ind(default, updated)
+  t = round(t, 2)
+  if p < 0.001: p = '***'
+  elif p < 0.01: p = '**'
+  elif p <= 0.05: p = '*'
+  else: p = ''
+  lp = ax1.plot([x[0], x[0], x[1], x[1]], [mo*1.05, mo*1.07, mo*1.07, mo*1.05], 'k-')
+  lp = ax1.text(np.mean(x), mo*1.09, p, ha='center', va='bottom', fontweight='bold')
   box = ax1.boxplot([default, updated], positions=x, widths=0.8, showfliers=False)
   for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
   xlocs.append(np.mean(x))
@@ -1598,12 +1609,12 @@ print('Default database: mean =', round(np.mean(all_nsti_default), 3), ', median
 print('Updated database: mean =', round(np.mean(all_nsti_updated), 3), ', median =', round(np.median(all_nsti_updated), 3), 'range ', round(min(all_nsti_updated), 3), '-', round(max(all_nsti_updated), 3))
 print('Difference: mean =', round(np.mean(nsti_difference), 3), ', median =', round(np.median(nsti_difference), 3), 'range ', round(min(nsti_difference), 3), '-', round(max(nsti_difference), 3))
 
-yl = plt.ylim([-0.05, 2])
+yl = plt.ylim([-0.05, 2.5])
 xt = plt.xticks(xlocs, [])
 yl = plt.ylabel('NSTI (per sequence)', fontweight='bold')
-databases = ['PICRUSt2-oldIMG', 'PICRUSt2-MPGA']
+databases = ['PICRUSt2-oldIMG', 'PICRUSt2-SC']
 handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=10) for s in range(len(databases))]
-lg = ax1.legend(handles=handles, loc='upper center', fontsize=8)
+lg = ax1.legend(handles=handles, loc='upper left', bbox_to_anchor=(1.01, 1.01), fontsize=8)
 
 plt.sca(ax2)
 x = [0, 1]
@@ -1630,6 +1641,16 @@ for ds in datasets:
   updated = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_updated_weighted_nsti.tsv', index_col=0, header=0, sep='\t')['weighted_NSTI'].values
   sc = ax2.scatter(np.random.normal(x[0], scale=0.1, size=len(default)), default, color=colours[0], alpha=0.5, s=10)
   sc = ax2.scatter(np.random.normal(x[1], scale=0.1, size=len(updated)), updated, color=colours[1], alpha=0.5, s=10)
+  mo = max([max(default), max(updated)])
+  if mo > 2: mo = 2
+  t, p = ttest_ind(default, updated)
+  t = round(t, 2)
+  if p < 0.001: p = '***'
+  elif p < 0.01: p = '**'
+  elif p <= 0.05: p = '*'
+  else: p = 'NS'
+  lp = ax2.plot([x[0], x[0], x[1], x[1]], [mo*1.05, mo*1.07, mo*1.07, mo*1.05], 'k-')
+  lp = ax2.text(np.mean(x), mo*1.09, p, ha='center', va='bottom', fontweight='bold')
   print(ds, round(np.median(updated)-np.median(default), 2))
   box = ax2.boxplot([default, updated], positions=x, widths=0.8, showfliers=False)
   for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
@@ -1642,12 +1663,13 @@ print('Updated database: mean =', round(np.mean(all_nsti_updated), 3), ', median
 print('Difference: mean =', round(np.mean(nsti_difference), 3), ', median =', round(np.median(nsti_difference), 3), 'range ', round(min(nsti_difference), 3), '-', round(max(nsti_difference), 3))
 
 xt = plt.xticks(xlocs, dataset_names, rotation=90)
+yl = plt.ylim([-0.05, 0.68])
 yl = plt.ylabel('Weighted NSTI (per sample)', fontweight='bold')
 
 ti = ax1.set_title('A', fontweight='bold', loc='left')
 ti = ax2.set_title('B', fontweight='bold', loc='left')
 
-plt.savefig(overall_folder+'figures/fig2_nsti_datasets.png', dpi=600, bbox_inches='tight')
+plt.savefig(overall_folder+'figures/figS1_nsti_datasets.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Figure 3 Correlations between default and updated PICRUSt2 databases
@@ -1696,7 +1718,7 @@ for trait in ['KO', 'EC']:
   if trait != 'KO': yt = axes[trait].set_yticklabels([])
   print('\n\n')
 
-plt.savefig(overall_folder+'figures/fig3_correlation_default_updated.png', dpi=600, bbox_inches='tight')
+plt.savefig(overall_folder+'figures/figS2_correlation_default_updated.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Figure 4 Correlation and distance between MGS and default/updated databases
@@ -1751,10 +1773,30 @@ for t in range(len(traits)):
   for d in range(len(datasets)):
     sc = ax1.scatter(np.random.normal(x[0], scale=0.1, size=len(all_correlations[d][0])), all_correlations[d][0], color=colours[0], alpha=0.5, s=10)
     sc = ax1.scatter(np.random.normal(x[1], scale=0.1, size=len(all_correlations[d][1])), all_correlations[d][1], color=colours[1], alpha=0.5, s=10)
+    mo = max([max(all_correlations[d][0]), max(all_correlations[d][1])])
+    if mo > 2: mo = 2
+    tstat, p = ttest_ind(all_correlations[d][0], all_correlations[d][1])
+    tstat = round(tstat, 2)
+    if p < 0.001: p = '***'
+    elif p < 0.01: p = '**'
+    elif p <= 0.05: p = '*'
+    else: p = 'NS'
+    lp = ax1.plot([x[0], x[0], x[1], x[1]], [mo*1.05, mo*1.06, mo*1.06, mo*1.05], 'k-')
+    lp = ax1.text(np.mean(x), mo*1.07, p, ha='center', va='bottom', fontweight='bold')
     box = ax1.boxplot(all_correlations[d], positions=x, widths=0.8, showfliers=False)
     for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
     sc = ax2.scatter(np.random.normal(x[0], scale=0.1, size=len(all_distances[d][0])), all_distances[d][0], color=colours[0], alpha=0.5, s=10)
     sc = ax2.scatter(np.random.normal(x[1], scale=0.1, size=len(all_distances[d][1])), all_distances[d][1], color=colours[1], alpha=0.5, s=10)
+    mo = max([max(all_distances[d][0]), max(all_distances[d][1])])
+    if mo > 2: mo = 2
+    tstat, p = ttest_ind(all_distances[d][0], all_distances[d][1])
+    tstat = round(tstat, 2)
+    if p < 0.001: p = '***'
+    elif p < 0.01: p = '**'
+    elif p <= 0.05: p = '*'
+    else: p = 'NS'
+    lp = ax2.plot([x[0], x[0], x[1], x[1]], [mo*1.05, mo*1.06, mo*1.06, mo*1.05], 'k-')
+    lp = ax2.text(np.mean(x), mo*1.07, p, ha='center', va='bottom', fontweight='bold')
     box = ax2.boxplot(all_distances[d], positions=x, widths=0.8, showfliers=False)
     for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
     xl = xlocs.append(np.mean(x))
@@ -1763,6 +1805,10 @@ for t in range(len(traits)):
   plt.sca(ax1)
   if traits[t] == 'KO':
     yl = plt.ylabel('Spearman correlation coefficient', fontweight='bold')
+  if t == 0:
+    yl = plt.ylim([0.65, 1.0])
+  else:
+    yl = plt.ylim([0.65, 0.95])
   xt = plt.xticks(xlocs, [])
   ti = plt.title(traits[t].replace('KO', 'KEGG orthologs').replace('EC', 'EC numbers'), fontweight='bold')
   ti = plt.title(labels[t][0], loc='left', fontweight='bold')
@@ -1771,12 +1817,15 @@ for t in range(len(traits)):
   xt = plt.xticks(xlocs, dataset_names, rotation=90)
   if traits[t] == 'KO': yl = plt.ylabel('Bray-Curtis dissimilarity', fontweight='bold')
   ti = plt.title(labels[t][1], loc='left', fontweight='bold')
-  databases = ['PICRUSt2-oldIMG', 'PICRUSt2-MPGA']
+  databases = ['PICRUSt2-oldIMG', 'PICRUSt2-SC']
   handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
-  if t == 1: legend = ax2.legend(handles=handles, loc='lower right')
-  #yl = plt.ylim([0.17, 0.73])
+  if t == 1: 
+    legend = ax2.legend(handles=handles, loc='lower right')
+    yl = plt.ylim([0.85, 1.07])
+  else:
+    yl = plt.ylim([0.65, 1.1])
 
-plt.savefig(overall_folder+'figures/fig4_mgs_correlation_distance.png', dpi=600, bbox_inches='tight')
+plt.savefig(overall_folder+'figures/figS3_mgs_correlation_distance.png', dpi=600, bbox_inches='tight')
 ```
 
 ## Figure 5 Taxa in the mock samples and NSTI/weighted NSTI
@@ -1872,7 +1921,280 @@ ti = ax3.set_title('C', fontweight='bold', loc='left')
 plt.savefig(overall_folder+'figures/fig5_taxa_in_mock.png', dpi=600, bbox_inches='tight')
 ```
 
+```{python}
+plt.close()
+fig = plt.figure(figsize=(15,20))
+ax9 = plt.subplot2grid((60,40),(20,17), rowspan=14, colspan=11)
+ax10 = plt.subplot2grid((60,40),(34,17), rowspan=2, colspan=11)
+ax11 = plt.subplot2grid((60,40),(20,29), rowspan=14, colspan=11)
+ax12 = plt.subplot2grid((60,40),(34,29), rowspan=2, colspan=11)
+
+
+plt.sca(ax9)
+x = [18.5, 17.5]
+xlocs = []
+all_nsti_default, all_nsti_updated, nsti_difference = [], [], []
+for ds in datasets:
+  default = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_default_full_nsti.tsv', index_col=0, header=0, sep='\t')#['metadata_NSTI'].values
+  updated = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_updated_full_nsti.tsv', index_col=0, header=0, sep='\t')#['metadata_NSTI'].values
+  asvs = list(set(list(default.index.values)+list(updated.index.values)))
+  for asv in asvs:
+    if asv in default.index.values:
+      def_nsti = default.loc[asv, 'metadata_NSTI']
+      all_nsti_default.append(def_nsti)
+    else: def_nsti = 'NA'
+    if asv in updated.index.values:
+      upd_nsti = updated.loc[asv, 'metadata_NSTI']
+      all_nsti_updated.append(upd_nsti)
+    else: upd_nsti = 'NA'
+    if def_nsti == 'NA' or upd_nsti == 'NA':
+      continue
+    else:
+      nsti_difference.append(upd_nsti-def_nsti)
+  default = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_default_full_nsti.tsv', index_col=0, header=0, sep='\t')['metadata_NSTI'].values
+  updated = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_updated_full_nsti.tsv', index_col=0, header=0, sep='\t')['metadata_NSTI'].values
+  sc = ax9.scatter(default, np.random.normal(x[0], scale=0.1, size=len(default)), color=colours[0], alpha=0.5, s=10)
+  sc = ax9.scatter(updated, np.random.normal(x[1], scale=0.1, size=len(updated)), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(default, updated)
+  fc, alp = 'w', 0.7
+  if p <= 0.05: fc, alp ='gray', 0.6
+  fontcol = 'k'
+  if np.median(default) < np.median(updated): fontcol = '#a93226'
+  tx = ax9.text(0.97, x[0], round(np.median(default), 3), ha='right', va='center', color=fontcol, bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  tx = ax9.text(0.97, x[1], round(np.median(updated), 3), ha='right', va='center', color=fontcol, bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  box = ax9.boxplot([default, updated], positions=x, widths=0.8, showfliers=False, vert=False)
+  for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+  xlocs.append(np.mean(x))
+  x[0] -= 2.5
+  x[1] -= 2.5
+
+yl = plt.xlim([-0.05, 1])
+xt = plt.yticks(xlocs, dataset_names), plt.xticks([])
+
+# 
+plt.sca(ax10)
+x = [1, 0]
+sc = ax10.scatter(all_nsti_default, np.random.normal(x[0], scale=0.1, size=len(all_nsti_default)), color=colours[0], alpha=0.5, s=10)
+sc = ax10.scatter(all_nsti_updated, np.random.normal(x[1], scale=0.1, size=len(all_nsti_updated)), color=colours[1], alpha=0.5, s=10)
+yl = plt.xlim([-0.05, 1])
+box = ax10.boxplot([all_nsti_default, all_nsti_updated], positions=x, widths=0.8, showfliers=False, vert=False)
+xt = plt.yticks([0.5], ['Overall'])
+xl = plt.xlabel('NSTI per sequence', fontweight='bold')
+for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+tstat, p = ttest_ind(all_nsti_default, all_nsti_updated)
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax10.text(0.97, x[0], round(np.median(all_nsti_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax10.text(0.97, x[1], round(np.median(all_nsti_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+
+plt.sca(ax11)
+x = [18.5, 17.5]
+xlocs = []
+all_nsti_default, all_nsti_updated, nsti_difference = [], [], []
+for ds in datasets:
+  default = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_default_weighted_nsti.tsv', index_col=0, header=0, sep='\t')#['weighted_NSTI'].values
+  updated = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_updated_weighted_nsti.tsv', index_col=0, header=0, sep='\t')#['weighted_NSTI'].values
+  asvs = list(set(list(default.index.values)+list(updated.index.values)))
+  for asv in asvs:
+    if asv in default.index.values:
+      def_nsti = default.loc[asv, 'weighted_NSTI']
+      all_nsti_default.append(def_nsti)
+    else: def_nsti = 'NA'
+    if asv in updated.index.values:
+      upd_nsti = updated.loc[asv, 'weighted_NSTI']
+      all_nsti_updated.append(upd_nsti)
+    else: upd_nsti = 'NA'
+    if def_nsti == 'NA' or upd_nsti == 'NA':
+      continue
+    else:
+      nsti_difference.append(upd_nsti-def_nsti)
+  default = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_default_weighted_nsti.tsv', index_col=0, header=0, sep='\t')['weighted_NSTI'].values
+  updated = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_updated_weighted_nsti.tsv', index_col=0, header=0, sep='\t')['weighted_NSTI'].values
+  sc = ax11.scatter(default, np.random.normal(x[0], scale=0.1, size=len(default)), color=colours[0], alpha=0.5, s=10)
+  sc = ax11.scatter(updated, np.random.normal(x[1], scale=0.1, size=len(updated)), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(default, updated)
+  fc, alp = 'w', 0.7
+  if p <= 0.05: fc, alp ='gray', 0.6
+  fontcol = 'k'
+  if np.median(default) < np.median(updated): fontcol = '#a93226'
+  tx = ax11.text(0.68, x[0], round(np.median(default), 3), ha='right', va='center', color=fontcol, bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  tx = ax11.text(0.68, x[1], round(np.median(updated), 3), ha='right', va='center', color=fontcol, bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  box = ax11.boxplot([default, updated], positions=x, widths=0.8, showfliers=False, vert=False)
+  for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+  xlocs.append(np.mean(x))
+  x[0] -= 2.5
+  x[1] -= 2.5
+
+yl = plt.xlim([-0.02, 0.7])
+xt = plt.yticks([]), plt.xticks([])
+
+# 
+plt.sca(ax12)
+x = [1, 0]
+sc = ax12.scatter(all_nsti_default, np.random.normal(x[0], scale=0.1, size=len(all_nsti_default)), color=colours[0], alpha=0.5, s=10)
+sc = ax12.scatter(all_nsti_updated, np.random.normal(x[1], scale=0.1, size=len(all_nsti_updated)), color=colours[1], alpha=0.5, s=10)
+yl = plt.xlim([-0.02, 0.7])
+box = ax12.boxplot([all_nsti_default, all_nsti_updated], positions=x, widths=0.8, showfliers=False, vert=False)
+xt = plt.yticks([])
+xl = plt.xlabel('NSTI per sample', fontweight='bold')
+for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+tstat, p = ttest_ind(all_nsti_default, all_nsti_updated)
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax12.text(0.68, x[0], round(np.median(all_nsti_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax12.text(0.68, x[1], round(np.median(all_nsti_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+
+ti = ax9.set_title('A', fontweight='bold', loc='left')
+ti = ax9.set_title('NSTI per sequence', fontweight='bold')
+ti = ax11.set_title('B', fontweight='bold', loc='left')
+ti = ax11.set_title('NSTI per sample', fontweight='bold')
+
+databases = ['PICRUSt2-oldIMG', 'PICRUSt2-SC']
+handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
+legend = ax11.legend(handles=handles, loc='upper left', bbox_to_anchor=(1.01, 1.01))
+
+
+plt.savefig(overall_folder+'figures/figS4_weighted_nsti_and_nsti.png', dpi=600, bbox_inches='tight')
+```
+
 ## Figure 6 Correlation and distance between mock and default/updated databases for full-length 16S
+
+```{python}
+plt.close()
+fig = plt.figure(figsize=(15,20))
+ax9 = plt.subplot2grid((60,40),(20,17), rowspan=14, colspan=11)
+ax10 = plt.subplot2grid((60,40),(34,17), rowspan=2, colspan=11)
+ax11 = plt.subplot2grid((60,40),(20,29), rowspan=14, colspan=11)
+ax12 = plt.subplot2grid((60,40),(34,29), rowspan=2, colspan=11)
+
+x = [18.5, 17.5]
+xlocs = []
+all_correlations, all_distances = [], []
+all_correlations_default, all_correlations_updated = [], []
+all_distances_default, all_distances_updated = [], []
+for ds in datasets:
+  mock = pd.read_csv(overall_folder+'mock/'+ds+'_EC_metagenome_norm.csv', index_col=0, header=0)
+  mock = mock.drop('-', axis=0)
+  mock = mock[mock.max(axis=1) > 0]
+  default = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_default_full_EC_metagenome.tsv', index_col=0, header=0, sep='\t')
+  rename = {}
+  for row in default.index.values:
+    if traits[t] == 'KO': rename[row] = 'ko:'+row
+    else: rename[row] = row.split(':')[1]
+  default = default.rename(index=rename)
+  updated = pd.read_csv(overall_folder+'mock_picrust2/'+ds+'_updated_full_EC_metagenome.tsv', index_col=0, header=0, sep='\t')
+  samples = [s for s in mock.columns if s in default.columns and s in updated.columns]
+  comparisons = [default, updated]
+  names = ['Default', 'Updated']
+  ds_correlations, ds_distances = [], []
+  for c in range(len(comparisons)):
+    comp = comparisons[c].copy(deep=True)
+    mock_comp = mock.copy(deep=True)
+    comp_relabun = comp.copy(deep=True)
+    comp_relabun = comp_relabun.divide(comp_relabun.sum(axis=0), axis=1).multiply(100)
+    mock_comp_relabun = mock_comp.copy(deep=True)
+    mock_comp_relabun = mock_comp_relabun.divide(mock_comp_relabun.sum(axis=0), axis=1).multiply(100)
+    intersection = [trait for trait in comp.index.values if trait in mock_comp.index.values]
+    comp = comp.loc[intersection, :]
+    mock_comp = mock_comp.loc[intersection, :]
+    correlations, distances = [], []
+    for sample in samples:
+        combined = pd.concat([comp_relabun.loc[:, [sample]].rename(columns={sample:'Comp'}), mock_comp_relabun.loc[:, [sample]].rename(columns={sample:'Mock'})]).fillna(value=0)
+        combined = combined.groupby(by=combined.index.values).sum()
+        X = combined.transpose().iloc[0:].values
+        bc_dist = np.nan_to_num(distance.cdist(X, X, 'braycurtis'))[0][1]
+        comp_vals = comp.loc[:, sample].values
+        mock_vals = mock_comp.loc[:, sample].values
+        stat, p = spearmanr(comp_vals, mock_vals)
+        ap = distances.append(bc_dist), correlations.append(stat)
+        if c == 0:
+          ap = all_distances_default.append(bc_dist), all_correlations_default.append(stat)
+        else:
+          ap = all_distances_updated.append(bc_dist), all_correlations_updated.append(stat)
+    ap = ds_correlations.append(correlations), ds_distances.append(distances)
+  ap = all_correlations.append(ds_correlations), all_distances.append(ds_distances)
+for d in range(len(datasets)):
+  sc = ax9.scatter(all_correlations[d][0], np.random.normal(x[0], scale=0.1, size=len(all_correlations[d][0])), color=colours[0], alpha=0.5, s=10)
+  sc = ax9.scatter(all_correlations[d][1], np.random.normal(x[1], scale=0.1, size=len(all_correlations[d][1])), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(all_correlations[d][0], all_correlations[d][1])
+  fc, alp = 'w', 0.7
+  if p <= 0.05: fc, alp ='gray', 0.6
+  tx = ax9.text(0.57, x[0], round(np.median(all_correlations[d][0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  tx = ax9.text(0.57, x[1], round(np.median(all_correlations[d][1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  box = ax9.boxplot(all_correlations[d], positions=x, widths=0.8, showfliers=False, vert=False)
+  for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+  sc = ax11.scatter(all_distances[d][0], np.random.normal(x[0], scale=0.1, size=len(all_distances[d][0])), color=colours[0], alpha=0.5, s=10)
+  sc = ax11.scatter(all_distances[d][1], np.random.normal(x[1], scale=0.1, size=len(all_distances[d][1])), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(all_distances[d][0], all_distances[d][1])
+  fc, alp = 'w', 0.7
+  if p <= 0.05: fc, alp ='gray', 0.6
+  tx = ax11.text(0.74, x[0], round(np.median(all_distances[d][0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  tx = ax11.text(0.74, x[1], round(np.median(all_distances[d][1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+  box = ax11.boxplot(all_distances[d], positions=x, widths=0.8, showfliers=False, vert=False)
+  for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+  xl = xlocs.append(np.mean(x))
+  x[0] += 2.5
+  x[1] += 2.5
+  
+plt.sca(ax10)
+x = [1, 0]
+sc = ax10.scatter(all_correlations_default, np.random.normal(x[0], scale=0.1, size=len(all_correlations_default)), color=colours[0], alpha=0.5, s=10)
+sc = ax10.scatter(all_correlations_updated, np.random.normal(x[1], scale=0.1, size=len(all_correlations_updated)), color=colours[1], alpha=0.5, s=10)
+yl = plt.xlim([-0.05, 1])
+box = ax10.boxplot([all_correlations_default, all_correlations_updated], positions=x, widths=0.8, showfliers=False, vert=False)
+xt = plt.yticks([0.5], ['Overall'])
+for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+tstat, p = ttest_ind(all_correlations_default, all_correlations_updated)
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax10.text(0.57, x[0], round(np.median(all_correlations_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax10.text(0.57, x[1], round(np.median(all_correlations_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+
+plt.sca(ax12)
+x = [1, 0]
+sc = ax12.scatter(all_distances_default, np.random.normal(x[0], scale=0.1, size=len(all_distances_default)), color=colours[0], alpha=0.5, s=10)
+sc = ax12.scatter(all_distances_updated, np.random.normal(x[1], scale=0.1, size=len(all_distances_updated)), color=colours[1], alpha=0.5, s=10)
+yl = plt.xlim([-0.05, 1])
+box = ax12.boxplot([all_distances_default, all_distances_updated], positions=x, widths=0.8, showfliers=False, vert=False)
+xt = plt.yticks([0.5], ['Overall'])
+for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
+tstat, p = ttest_ind(all_distances_default, all_distances_updated)
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax12.text(0.74, x[0], round(np.median(all_distances_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax12.text(0.74, x[1], round(np.median(all_distances_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+
+ti = ax9.set_title('A', fontweight='bold', loc='left')
+ti = ax9.set_title("Spearman's correlation", fontweight='bold')
+ti = ax11.set_title('B', fontweight='bold', loc='left')
+ti = ax11.set_title('Bray-Curtis dissimilarity', fontweight='bold')
+
+databases = ['PICRUSt2-oldIMG', 'PICRUSt2-SC']
+handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
+legend = ax11.legend(handles=handles, loc='upper left', bbox_to_anchor=(1.01, 1.01))
+
+plt.sca(ax9)
+yt = plt.yticks(xlocs, dataset_names)
+xl = plt.xlim([0.36, 0.58])
+xt = plt.xticks([])
+
+plt.sca(ax10)
+xl = plt.xlabel('Spearman correlation coefficient', fontweight='bold')
+xl = plt.xlim([0.36, 0.58])
+
+plt.sca(ax11)
+yt = plt.yticks([])
+xl = plt.xlim([0.4, 0.75])
+xt = plt.xticks([])
+
+plt.sca(ax12)
+xl = plt.xlabel('Bray-Curtis dissimilarity index', fontweight='bold')
+xl = plt.xlim([0.4, 0.75])
+yt = plt.yticks([])
+
+
+plt.savefig(overall_folder+'figures/figS5_spearman_and_distance_ec_numbers.png', dpi=600, bbox_inches='tight')
+```
 
 ```{python}
 plt.close()
@@ -2546,7 +2868,7 @@ ds_average['overall'][1].append(np.median(updated))
 #   tx = ax14.text(2, y[a]+0.5, round(medians_default[a], 3), ha='center', va='center', fontsize=10)
 #   tx = ax14.text(3, y[a]+0.5, round(medians_updated[a], 3), ha='center', va='center', fontsize=10)
 
-plt.savefig(overall_folder+'figures/overall_figure.png', dpi=600, bbox_inches='tight')
+plt.savefig(overall_folder+'figures/overall_figure_old.png', dpi=600, bbox_inches='tight')
 ```
 
 ```{python}
@@ -3360,7 +3682,7 @@ ax17 = plt.subplot2grid((60,21),(34,7), rowspan=2, colspan=7)
 ax18 = plt.subplot2grid((60,21),(20,14), rowspan=14, colspan=7)
 ax19 = plt.subplot2grid((60,21),(34,14), rowspan=2, colspan=7)
 
-ti = ax_db.set_title('a) MPGA construction', fontweight='bold', loc='left', fontsize=16)
+ti = ax_db.set_title('a) SC construction', fontweight='bold', loc='left', fontsize=16)
 ti = ax_annot_def_title.set_title('b) Functions included', fontweight='bold', loc='left', fontsize=16)
 ti = ax1.set_title('c) Number of taxa included', fontweight='bold', loc='left', fontsize=16)
 ti = ax13.set_title('d) Simulated samples', fontweight='bold', loc='left', fontsize=16)
@@ -3390,7 +3712,7 @@ li = plt.xlim([-0.5, 0.5]), plt.ylim([0, 1])
 xt = plt.xticks([]), plt.yticks([])
 
 plt.sca(ax_annot_upd_title)
-tx = ax_annot_upd_title.text(0, 0.5, 'MPGA', fontweight='bold', fontsize=12, ha='center', va='center')
+tx = ax_annot_upd_title.text(0, 0.5, 'SC', fontweight='bold', fontsize=12, ha='center', va='center')
 li = plt.xlim([-0.5, 0.5]), plt.ylim([0, 1])
 xt = plt.xticks([]), plt.yticks([])
 
@@ -3401,7 +3723,7 @@ li = plt.xlim([-0.5, 0.5]), plt.ylim([0, 1])
 xt = plt.xticks([]), plt.yticks([])
 
 # #number of taxa
-data = pd.read_csv('/Users/robynwright/Dropbox/Papers_writing/PICRUSt2_database_application_note/Number_of_genomes_old_and_new.csv', index_col=0, header=0)
+data = pd.read_csv(folder+'Number_of_genomes_old_and_new.csv', index_col=0, header=0)
 levels = ['Phylum', 'Class', 'Order', 'Family', 'Genus', 'Species', 'Genomes']
 locs = [0, 1.5, 3, 4.5, 6, 7.5, 9]
 x2 = [locs[l]+0.3 for l in range(len(levels))]
@@ -3442,7 +3764,7 @@ plt.sca(ax4)
 xl = plt.xlim([0, 9500])
 yt = plt.yticks([]), plt.xticks([])
 
-databases = ['PICRUSt2-oldIMG', 'PICRUSt2-MPGA']
+databases = ['PICRUSt2-oldIMG', 'PICRUSt2-SC']
 handles = [Line2D([0], [0], marker='s', color='w', label=databases[s], markerfacecolor=colours[s], markersize=12) for s in range(len(databases))]
 legend = ax_leg.legend(handles=handles, loc='center', ncol=2)
 plt.sca(ax_leg)
@@ -3585,8 +3907,9 @@ for ds in datasets:
   updated = pd.read_csv(overall_folder+'mgs_picrust2/'+ds+'_updated_weighted_nsti.tsv', index_col=0, header=0, sep='\t')['weighted_NSTI'].values
   sc = ax11.scatter(default, np.random.normal(x[0], scale=0.1, size=len(default)), color=colours[0], alpha=0.5, s=10)
   sc = ax11.scatter(updated, np.random.normal(x[1], scale=0.1, size=len(updated)), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(default, updated)
   fc, alp = 'w', 0.7
-  if np.median(default) < np.median(updated): fc, alp = 'gray', 0.6
+  if p <= 0.05: fc, alp ='gray', 0.6
   tx = ax11.text(0.68, x[0], round(np.median(default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   tx = ax11.text(0.68, x[1], round(np.median(updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   box = ax11.boxplot([default, updated], positions=x, widths=0.8, showfliers=False, vert=False)
@@ -3608,8 +3931,11 @@ box = ax12.boxplot([all_nsti_default, all_nsti_updated], positions=x, widths=0.8
 xt = plt.yticks([0.5], ['Overall'])
 xl = plt.xlabel('Weighted NSTI', fontweight='bold')
 for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
-tx = ax12.text(0.68, x[0], round(np.median(all_nsti_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
-tx = ax12.text(0.68, x[1], round(np.median(all_nsti_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
+tstat, p = ttest_ind(all_nsti_default, all_nsti_updated)
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax12.text(0.68, x[0], round(np.median(all_nsti_default), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax12.text(0.68, x[1], round(np.median(all_nsti_updated), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
 # 
 # #taxonomy
 # 
@@ -3701,8 +4027,9 @@ overall_correlations, overall_distances = [[], []], [[], []]
 for d in range(len(datasets)):
   sc = ax16.scatter(all_correlations[d][0], np.random.normal(x[0], scale=0.1, size=len(all_correlations[d][0])), color=colours[0], alpha=0.5, s=10)
   sc = ax16.scatter(all_correlations[d][1], np.random.normal(x[1], scale=0.1, size=len(all_correlations[d][1])), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(all_correlations[d][0], all_correlations[d][1])
   fc, alp = 'w', 0.7
-  if np.median(all_correlations[d][0]) > np.median(all_correlations[d][1]): fc, alp = 'gray', 0.6
+  if p <= 0.05: fc, alp ='gray', 0.6
   tx = ax16.text(0.94, x[0], round(np.median(all_correlations[d][0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   tx = ax16.text(0.94, x[1], round(np.median(all_correlations[d][1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   overall_correlations[0].extend(all_correlations[d][0])
@@ -3711,8 +4038,9 @@ for d in range(len(datasets)):
   for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
   sc = ax18.scatter(all_distances[d][0], np.random.normal(x[0], scale=0.1, size=len(all_distances[d][0])), color=colours[0], alpha=0.5, s=10)
   sc = ax18.scatter(all_distances[d][1], np.random.normal(x[1], scale=0.1, size=len(all_distances[d][1])), color=colours[1], alpha=0.5, s=10)
+  tstat, p = ttest_ind(all_distances[d][0], all_distances[d][1])
   fc, alp = 'w', 0.7
-  if np.median(all_distances[d][0]) < np.median(all_distances[d][1]): fc, alp = 'gray', 0.6
+  if p <= 0.05: fc, alp ='gray', 0.6
   tx = ax18.text(0.63, x[0], round(np.median(all_distances[d][0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   tx = ax18.text(0.63, x[1], round(np.median(all_distances[d][1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
   overall_distances[0].extend(all_distances[d][0])
@@ -3743,8 +4071,11 @@ box = ax17.boxplot(overall_correlations, positions=x, widths=0.8, showfliers=Fal
 xt = plt.yticks([])
 xl = plt.xlabel('Spearman correlation coefficient', fontweight='bold')
 for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
-tx = ax17.text(0.94, x[0], round(np.median(overall_correlations[0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
-tx = ax17.text(0.94, x[1], round(np.median(overall_correlations[1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
+tstat, p = ttest_ind(overall_correlations[0], overall_correlations[1])
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax17.text(0.94, x[0], round(np.median(overall_correlations[0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax17.text(0.94, x[1], round(np.median(overall_correlations[1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
 
 plt.sca(ax19)
 x = [1, 0]
@@ -3755,8 +4086,11 @@ box = ax19.boxplot(overall_distances, positions=x, widths=0.8, showfliers=False,
 xt = plt.yticks([])
 xl = plt.xlabel('Bray-Curtis dissimilarity index', fontweight='bold')
 for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']: bi = plt.setp(box[item], color='k')
-tx = ax19.text(0.63, x[0], round(np.median(overall_distances[0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
-tx = ax19.text(0.63, x[1], round(np.median(overall_distances[1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor='w', alpha=0.7))
+tstat, p = ttest_ind(overall_distances[0], overall_distances[1])
+fc, alp = 'w', 0.7
+if p <= 0.05: fc, alp ='gray', 0.6
+tx = ax19.text(0.63, x[0], round(np.median(overall_distances[0]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
+tx = ax19.text(0.63, x[1], round(np.median(overall_distances[1]), 3), ha='right', va='center', bbox=dict(boxstyle='round', facecolor=fc, alpha=alp))
 
 plt.savefig(overall_folder+'figures/overall_figure.png', dpi=600, bbox_inches='tight')
 ```
